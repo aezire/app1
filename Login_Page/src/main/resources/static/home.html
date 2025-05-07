@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e8f0fe;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 100px;
+        }
+        h1 {
+            color: #333;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to the web page</h1>
+    <button onclick="logout()">Logout</button>
+
+    <script>
+        function logout() {
+            localStorage.removeItem("user");
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>
