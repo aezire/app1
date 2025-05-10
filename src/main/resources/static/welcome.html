@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Welcome!</h2>
+        <p>You have successfully logged in.</p>
+        <button id="logoutBtn">Logout</button>
+    </div>
+    <script>
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+            localStorage.removeItem("token");
+            window.location.href = "/login.html";
+        });
+    </script>
+</body>
+</html>
