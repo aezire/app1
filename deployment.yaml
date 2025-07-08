@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: spring-controller
-          image: shubhamchavhan123/spring-controller:11
+          image: shubhamchavhan123/aezire-application:${IMAGE_TAG}
           resources:
             limits:
               memory: "512Mi"
