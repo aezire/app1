@@ -1,0 +1,49 @@
+pipeline {
+    agent any
+    tools {
+            maven 'maven-3.9.2'
+         }
+         environment {
+        APP_NAME = 'aezire-application'
+        IMAGE_TAG = "${BUILD_NUMBER}"
+        DOCKERHUB_CREDENTIALS= credentials('docker-credentials')
+         KUBECONFIG = '/var/lib/jenkins/.kube/config'
+         }
+    stages {
+       stage('Clone Git Repository') {
+            steps {
+              checkout scmGit(branches: [[name: 'shubham']], extensions: [], userRemoteConfigs: [[credentialsId: 'caa8215d-a20d-4cf2-8692-d6cd5eef44f2', url: 'https://github.com/aezire/app1.git']])
+            }
+         }
+    
+        stage('Build Docker Image') {
+          steps{
+                    sh "docker build -t $DOCKERHUB_CREDENTIALS_USR/${APP_NAME}:${IMAGE_TAG} ."
+                    echo 'Build Image Completed'
+                }
+        }
+        stage('Log in To Docker')
+    {
+      steps{
+            sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                echo 'Login Completed'
+                        }
+                }
+    stage('Push Docker Image') {
+          steps{
+                    sh "docker push $DOCKERHUB_CREDENTIALS_USR/${APP_NAME}:${IMAGE_TAG}"
+                    echo 'Docker Push Completed'
+                }
+        }
+        
+    stage('Deploy to kubernates') {
+          steps{
+                    sh " envsubst < deployment.yaml > final-deployment.yaml"
+                    sh "kubectl apply -f final-deployment.yaml"
+                    echo 'kubernetes deployment completed'
+                }
+        }
+    
+        }
+
+}
